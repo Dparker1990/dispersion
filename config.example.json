@@ -1,5 +1,6 @@
 {
 	"bindip": "localhost",
 	"bindport": "9292",
-	"seeds": []
+	"Seeds": [],
+	"Logfile": ""
 }
