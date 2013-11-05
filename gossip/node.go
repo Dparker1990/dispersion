@@ -1,6 +1,7 @@
 package gossip
 
 import (
+	"fmt"
 	"log"
 	"math/rand"
 	"net"
@@ -25,13 +26,16 @@ func NewNode(conf Config) *Node {
 }
 
 func (n *Node) Gossip() {
-	peer := n.randomPeer()
+	peer, err := n.randomPeer()
+	if err != nil {
+		return
+	}
 
 	conn, err := net.Dial("tcp", peer)
 	defer conn.Close()
-
 	if err != nil {
 		log.Printf("Could not contact %v", peer)
+		return
 	}
 
 	msg := NewMessage(HEARTBEAT, n.Peers)
@@ -41,7 +45,7 @@ func (n *Node) Gossip() {
 	}
 }
 
-func (n Node) Register() {
+func (n *Node) Register() {
 	seed := n.Conf.Seeds[0]
 	conn, err := net.Dial("tcp", seed)
 	if err != nil {
@@ -54,6 +58,8 @@ func (n Node) Register() {
 	if _, err = messageWriter.Write(msg); err != nil {
 		log.Printf("Could not send seed message due to: %v", err)
 	}
+
+	n.Peers[seed] = Node{Health: ACTIVE}
 }
 
 func (n *Node) StartServer() (err error) {
@@ -96,29 +102,33 @@ func (n *Node) Merge(hash map[string]Node) {
 			n.Peers[key] = value
 		}
 	}
-
-	log.Printf("Merged Peers, now is: %v", n.Peers)
 }
 
 func (n *Node) SetHealth(health int) {
 	n.Health = health
 }
 
-func (n Node) randomPeer() string {
-	keys := n.allPeerKeys()
+func (n Node) AllPeerKeys() (keys []string) {
+	for k, _ := range n.Peers {
+		keys = append(keys, k)
+	}
+
+	return
+}
+
+func (n *Node) randomPeer() (peer string, err error) {
+	keys := n.AllPeerKeys()
 	max := len(keys)
+	if max == 0 {
+		err = fmt.Errorf("No peers.")
+		return
+	}
+
 	idx := rand.Intn(max)
 	if idx == max {
 		idx--
 	}
 
-	return keys[idx]
-}
-
-func (n Node) allPeerKeys() (keys []string) {
-	for k, _ := range n.Peers {
-		keys = append(keys, k)
-	}
-
+	peer = keys[idx]
 	return
 }
