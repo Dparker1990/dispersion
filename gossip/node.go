@@ -5,10 +5,6 @@ import (
 	"net"
 )
 
-const (
-	HEARTBEAT = 'h'
-)
-
 type Node struct {
 	Health string
 	Peers  map[string]Node
