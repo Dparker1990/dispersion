@@ -96,6 +96,8 @@ func (n *Node) Merge(hash map[string]Node) {
 			n.Peers[key] = value
 		}
 	}
+
+	log.Printf("Merged Peers, now is: %v", n.Peers)
 }
 
 func (n *Node) SetHealth(health int) {
