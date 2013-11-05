@@ -1,11 +1,9 @@
-package config
+package gossip
 
 import (
 	"log"
 	"net"
 )
-
-const configPath = "../config.json"
 
 type Config struct {
 	Bindip   string

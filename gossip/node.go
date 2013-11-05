@@ -1,7 +1,6 @@
 package gossip
 
 import (
-	c "github.com/Dparker1990/dispersion/config"
 	"log"
 	"math/rand"
 	"net"
@@ -16,10 +15,10 @@ const (
 type Node struct {
 	Health int
 	Peers  map[string]Node
-	Conf   c.Config
+	Conf   Config
 }
 
-func NewNode(conf c.Config) *Node {
+func NewNode(conf Config) *Node {
 	hash := make(map[string]Node)
 
 	return &Node{Health: ACTIVE, Peers: hash, Conf: conf}
