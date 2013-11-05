@@ -16,4 +16,8 @@ func TestMerge(t *testing.T) {
 	if _, ok := node.Peers["127.0.0.1"]; ok != true {
 		t.Errorf("Expected hash to contain key, got: %v", node.Peers)
 	}
+
+	if node.Name() != "127.0.0.1:9292" {
+		t.Errorf("Expected 127.0.0.1:9292, got: %v", node.Name())
+	}
 }

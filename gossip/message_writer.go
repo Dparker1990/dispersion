@@ -21,8 +21,9 @@ func NewMessageWriter(conn net.Conn) *MessageWriter {
 
 func (m *MessageWriter) Write(msg Message) (size int, err error) {
 	writer := bufio.NewWriter(m.conn)
+	m.msg = msg
 
-	if err = writer.WriteByte(HEARTBEAT); err != nil {
+	if err = writer.WriteByte(msg.Type); err != nil {
 		return
 	}
 
@@ -33,7 +34,7 @@ func (m *MessageWriter) Write(msg Message) (size int, err error) {
 func (m *MessageWriter) sendBody() (size int, err error) {
 	encoder := gob.NewEncoder(m.buf)
 
-	if err = encoder.Encode(m.msg); err != nil {
+	if err = encoder.Encode(m.msg.Body); err != nil {
 		return
 	}
 
@@ -42,7 +43,7 @@ func (m *MessageWriter) sendBody() (size int, err error) {
 		return
 	}
 
-	size, err = (m.conn).Write(m.buf.Bytes())
+	size, err = m.conn.Write(m.buf.Bytes())
 	return
 }
 

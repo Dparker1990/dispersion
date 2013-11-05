@@ -11,7 +11,10 @@ import (
 
 type MessageReader struct {
 	conn net.Conn
-	buf  bytes.Buffer
+}
+
+func NewMessageReader(conn net.Conn) MessageReader {
+	return MessageReader{conn: conn}
 }
 
 func (m *MessageReader) Read() (msg *Message, err error) {
