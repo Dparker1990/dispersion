@@ -14,8 +14,12 @@ type MessageWriter struct {
 	msg  Message
 }
 
+func NewMessageWriter(conn net.Conn) *MessageWriter {
+	buf := new(bytes.Buffer)
+	return &MessageWriter{conn: conn, buf: buf}
+}
+
 func (m *MessageWriter) Write(msg Message) (size int, err error) {
-	m.buf = new(bytes.Buffer)
 	writer := bufio.NewWriter(m.conn)
 
 	if err = writer.WriteByte(HEARTBEAT); err != nil {
