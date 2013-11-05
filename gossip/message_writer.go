@@ -48,5 +48,6 @@ func (m *MessageWriter) sendBody() (size int, err error) {
 }
 
 func (m *MessageWriter) writeInt32(n int) error {
-	return binary.Write(m.conn, binary.BigEndian, int32(n))
+	err := binary.Write(m.conn, binary.BigEndian, int32(n))
+	return err
 }

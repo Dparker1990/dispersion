@@ -41,9 +41,12 @@ func (n *Node) Gossip() {
 	}
 }
 
-func (n Node) Seed() {
+func (n Node) Register() {
 	seed := n.Conf.Seeds[0]
 	conn, err := net.Dial("tcp", seed)
+	if err != nil {
+		log.Fatalf("Could not connect to seed: %v", err)
+	}
 	defer conn.Close()
 
 	msg := Message{Type: SEED}
