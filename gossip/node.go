@@ -1,6 +1,7 @@
 package gossip
 
 import (
+	"github.com/Dparker1990/dispersion/config"
 	"log"
 	"net"
 )
@@ -14,11 +15,17 @@ const (
 type Node struct {
 	Health int
 	Peers  map[string]Node
+	Conf   config.Config
 }
 
 func NewNode() *Node {
 	hash := make(map[string]Node)
-	return &Node{Health: ACTIVE, Peers: hash}
+	conf, err := config.Parse()
+	if err != nil {
+		log.Fatalf("Could not parse config due to: %v", err)
+	}
+
+	return &Node{Health: ACTIVE, Peers: hash, Conf: conf}
 }
 
 func (n *Node) HandleConnection(conn net.Conn) {
