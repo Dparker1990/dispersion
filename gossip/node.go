@@ -5,14 +5,20 @@ import (
 	"net"
 )
 
+const (
+	ACTIVE     = iota
+	SUSPICIOUS = iota
+	DEAD       = iota
+)
+
 type Node struct {
-	Health string
+	Health int
 	Peers  map[string]Node
 }
 
 func NewNode() *Node {
 	hash := make(map[string]Node)
-	return &Node{Health: "active", Peers: hash}
+	return &Node{Health: ACTIVE, Peers: hash}
 }
 
 func (n *Node) HandleConnection(conn net.Conn) {

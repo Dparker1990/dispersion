@@ -11,7 +11,7 @@ func TestDecodeBody(t *testing.T) {
 	hash := make(map[string]Node)
 	encoder := gob.NewEncoder(buf)
 
-	hash["foo"] = Node{Health: "active"}
+	hash["foo"] = Node{Health: ACTIVE}
 	if err := encoder.Encode(hash); err != nil {
 		t.Errorf("Could not encode due to: %v", err)
 	}
@@ -22,7 +22,7 @@ func TestDecodeBody(t *testing.T) {
 	}
 
 	node := newHash["foo"]
-	if node.Health != "active" {
+	if node.Health != ACTIVE {
 		t.Errorf("Decode did not happen properly, got: %v", newHash)
 	}
 }
