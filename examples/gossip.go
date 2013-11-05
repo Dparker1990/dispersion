@@ -13,16 +13,21 @@ func blather(node *gossip.Node) {
 }
 
 func main() {
-	seed := flag.Bool("s", false, "Whether or not to act as a seed.")
+	var seed bool
+	flag.BoolVar(&seed, "s", false, "Whether or not to act as a seed.")
 	flag.Parse()
 
 	s := os.Getenv("GOSSIP_SEED")
 	config := gossip.Config{Bindip: "127.0.0.1", Bindport: "9292", Seeds: []string{s}}
 	node := gossip.NewNode(config)
 
-	if !*seed {
+	if !seed {
 		node.Register()
 	}
 	go blather(node)
 	go node.StartServer()
+
+	for {
+		time.Sleep(1)
+	}
 }
