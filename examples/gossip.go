@@ -13,7 +13,7 @@ func blather(node *gossip.Node) {
 }
 
 func main() {
-	seed := flag.Bool("-s", false, "Whether or not to act as a seed.")
+	seed := flag.Bool("s", false, "Whether or not to act as a seed.")
 	flag.Parse()
 
 	s := os.Getenv("GOSSIP_SEED")
