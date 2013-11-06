@@ -20,6 +20,8 @@ func NewMessageReader(conn net.Conn) MessageReader {
 func (m *MessageReader) Read() (msg *Message, err error) {
 	t := readByte(m.conn)
 	l := readInt32(m.conn)
+	log.Printf("Parsed message, type: %v, length: %v", t, l)
+
 	b, err := decodeBody(readBody(m.conn, l))
 	if err != nil {
 		return
