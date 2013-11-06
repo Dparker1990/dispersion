@@ -63,7 +63,7 @@ func (n *Node) Register() {
 }
 
 func (n *Node) StartServer() (err error) {
-	ln, err := net.Listen("tcp", n.Conf.Bindport)
+	ln, err := net.Listen("tcp", ":"+n.Conf.Bindport)
 	if err != nil {
 		panic(fmt.Sprintf("Could not listen due to: %v", err))
 	}
