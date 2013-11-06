@@ -74,6 +74,8 @@ func (n *Node) StartServer() (err error) {
 			continue
 		}
 
+		log.Printf("Received connection from: %v", conn.RemoteAddr())
+
 		go n.HandleConnection(conn)
 	}
 
