@@ -22,7 +22,6 @@ type Node struct {
 
 func NewNode() *Node {
 	hash := make(map[string]Node)
-
 	return &Node{Health: ACTIVE, Peers: hash}
 }
 
