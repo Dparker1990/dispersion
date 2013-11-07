@@ -56,7 +56,7 @@ func (n *Node) Gossip() (err error) {
 
 func (n *Node) Register() {
 	seed := n.Config().Seeds[0]
-	conn, err := net.Dial("tcp", seed+":9292")
+	conn, err := net.Dial("tcp", net.JoinHostPort(seed, "9292"))
 	if err != nil {
 		log.Fatalf("Could not connect to seed: %v", err)
 	}
