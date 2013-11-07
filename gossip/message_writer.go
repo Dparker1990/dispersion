@@ -1,19 +1,16 @@
 package gossip
 
 import (
-	"bytes"
 	"encoding/gob"
 	"io"
 )
 
 type MessageWriter struct {
 	conn io.Writer
-	buf  *bytes.Buffer
 }
 
 func NewMessageWriter(conn io.Writer) *MessageWriter {
-	buf := new(bytes.Buffer)
-	return &MessageWriter{conn: conn, buf: buf}
+	return &MessageWriter{conn: conn}
 }
 
 func (m *MessageWriter) Write(msg Message) (size int, err error) {
