@@ -1,6 +1,8 @@
 package gossip
 
 import (
+	"bytes"
+	"encoding/gob"
 	"testing"
 )
 
@@ -47,5 +49,25 @@ func TestAllPeerKeys(t *testing.T) {
 	allKeys := node1.AllPeerKeys()
 	if len(allKeys) != 2 {
 		t.Errorf("Keys did not come out as expected, got: %v", allKeys)
+	}
+}
+
+func TestSendMessage(t *testing.T) {
+	var decoded Message
+
+	node := NewNode()
+	conn := new(bytes.Buffer)
+	body := make(map[string]Node)
+	msg := NewMessage(SEED, body)
+	decoder := gob.NewDecoder(conn)
+
+	_, err := node.SendMessage(conn, msg)
+	if err != nil {
+		t.Fail()
+	}
+
+	decoder.Decode(&decoded)
+	if decoded.Type != SEED {
+		t.Errorf("Message was not sent properly, got: %v", decoded)
 	}
 }

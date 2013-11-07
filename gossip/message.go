@@ -10,6 +10,6 @@ type Message struct {
 	Body map[string]Node
 }
 
-func NewMessage(t int, body map[string]Node) Message {
-	return Message{Type: HEARTBEAT, Body: body}
+func NewMessage(t byte, body map[string]Node) Message {
+	return Message{Type: t, Body: body}
 }

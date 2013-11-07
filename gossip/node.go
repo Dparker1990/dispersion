@@ -2,6 +2,7 @@ package gossip
 
 import (
 	"fmt"
+	"io"
 	"log"
 	"math/rand"
 	"net"
@@ -39,17 +40,8 @@ func (n *Node) Gossip() (err error) {
 		return
 	}
 
-	conn := peer.Conn
-	if err != nil {
-		log.Printf("Could not contact %v", peer)
-		return
-	}
-
 	msg := NewMessage(HEARTBEAT, n.Peers)
-	messageWriter := NewMessageWriter(conn)
-	if _, err = messageWriter.Write(msg); err != nil {
-		log.Printf("Could not send message due to: %v", err)
-	}
+	_, err = n.SendMessage(peer.Conn, msg)
 
 	return
 }
@@ -62,12 +54,18 @@ func (n *Node) Register() {
 	}
 
 	msg := Message{Type: SEED}
-	messageWriter := NewMessageWriter(conn)
-	if _, err = messageWriter.Write(msg); err != nil {
-		log.Printf("Could not send seed message due to: %v", err)
+	_, err = n.SendMessage(conn, msg)
+	if err != nil {
+		log.Fatal(err)
 	}
 
 	n.Peers[seed] = Node{Health: ACTIVE}
+}
+
+func (n *Node) SendMessage(conn io.Writer, msg Message) (size int, err error) {
+	messageWriter := NewMessageWriter(conn)
+	size, err = messageWriter.Write(msg)
+	return
 }
 
 func (n *Node) StartServer() (err error) {
