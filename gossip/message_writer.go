@@ -3,15 +3,15 @@ package gossip
 import (
 	"bytes"
 	"encoding/gob"
-	"net"
+	"io"
 )
 
 type MessageWriter struct {
-	conn net.Conn
+	conn io.Writer
 	buf  *bytes.Buffer
 }
 
-func NewMessageWriter(conn net.Conn) *MessageWriter {
+func NewMessageWriter(conn io.Writer) *MessageWriter {
 	buf := new(bytes.Buffer)
 	return &MessageWriter{conn: conn, buf: buf}
 }
