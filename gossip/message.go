@@ -6,9 +6,8 @@ const (
 )
 
 type Message struct {
-	Length int32
-	Type   byte
-	Body   map[string]Node
+	Type byte
+	Body map[string]Node
 }
 
 func NewMessage(t int, body map[string]Node) Message {
