@@ -158,10 +158,6 @@ func (n *Node) randomPeer() (peer Node, err error) {
 	}
 
 	idx := rand.Intn(max)
-	if idx == max {
-		idx--
-	}
-
 	key := keys[idx]
 	peer = n.Peers[key]
 	return
