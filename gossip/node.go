@@ -91,7 +91,7 @@ func (n *Node) StartServer() (err error) {
 }
 
 func (n *Node) HandleConnection(conn net.Conn) {
-	msgReader := MessageReader{conn: conn}
+	msgReader := NewMessageReader(conn)
 	if err := n.addNewNode(conn); err != nil {
 		log.Print(err)
 	}
